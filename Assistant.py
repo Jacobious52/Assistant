@@ -1,3 +1,11 @@
+'''
+Author:
+Jacob Gonzalez
+Contributers:
+Sam Lewis
+Jake Lane
+'''
+
 import sublime, sublime_plugin
 
 '''
