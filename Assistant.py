@@ -31,15 +31,7 @@ class AssistantListener(sublime_plugin.EventListener):
         #rows
         elif layout == self.layouts[1]:
             view.window().set_layout({"cols": [0 ,1], "rows": [0, 0.5, 1], "cells": [[0, 0, 1, 1], [0, 1, 1, 2]]})
-
-    layout_pref = "2cols"
-
-    def layout_panes(self):
-        if layout_pref == "2cols":
-            view.window().set_layout({"cols": [0, 0.5, 1], "rows": [0, 1], "cells": [[0, 0, 1, 1], [1, 0, 2, 1]]})
-        elif layout_pref == "2rows":
-            view.window().set_layout({"cols": [0, 0.5, 1], "rows": [0, 1], "cells": [[0, 0, 1, 1], [1, 0, 2, 1]]})
-
+            
     def on_activated(self, view):
         file_name = view.file_name()
         # custom layout name
@@ -50,7 +42,6 @@ class AssistantListener(sublime_plugin.EventListener):
                 header = view.window().find_open_file(file_name.replace('.cpp', '.h'))
                 if header != None:
                     self.layout_panes(self.current, view)
-                    #layout_panes()
                     view.window().set_view_index(header, 1, 0)
                     view.window().set_view_index(view, 0, view.window().get_view_index(view)[1])
 
@@ -59,6 +50,5 @@ class AssistantListener(sublime_plugin.EventListener):
                 source = view.window().find_open_file(file_name.replace('.h', '.cpp'))
                 if source != None:
                     self.layout_panes(self.current, view)
-                    #layout_panes()
                     view.window().set_view_index(source, 0, 0)
                     view.window().set_view_index(view, 1, view.window().get_view_index(view)[1])
