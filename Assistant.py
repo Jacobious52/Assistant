@@ -3,7 +3,7 @@ Author:
 Jacob Gonzalez
 Contributers:
 Sam Lewis
-Jake Lane
+Jack Land
 '''
 
 import sublime, sublime_plugin
