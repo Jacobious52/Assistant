@@ -1,9 +1,9 @@
 '''
 Author:
-Jacob Gonzalez
+Jacob "Speedy" Gonzalez
 Contributers:
 Sam Lewis
-Jack Land
+Jake Lane
 '''
 
 import sublime, sublime_plugin
