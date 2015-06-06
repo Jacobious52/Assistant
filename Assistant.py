@@ -13,6 +13,8 @@ header files will be to the right/bottom
 source files will be to the left/top
 '''
 
+AssistantViewChangeCounterTest = 0
+
 class AssistantListener(sublime_plugin.EventListener):
     '''EventListener class for events'''
 
@@ -36,6 +38,8 @@ class AssistantListener(sublime_plugin.EventListener):
         file_name = view.file_name()
         # custom layout name
 
+        global AssistantViewChangeCounterTest
+
         if file_name != None:
             # source file, move header to right, source to left
             if file_name.endswith(".cpp"):
@@ -45,6 +49,14 @@ class AssistantListener(sublime_plugin.EventListener):
                     view.window().set_view_index(header, 1, 0)
                     view.window().set_view_index(view, 0, view.window().get_view_index(view)[1])
 
+                    #Switches view then switches back so they are both active views
+                    #The global variable is used so it doesn't get into a switching loop
+                    if AssistantViewChangeCounterTest == 0:
+                        AssistantViewChangeCounterTest = 1
+                        view.window().focus_view(header)
+                        view.window().focus_view(view)
+                        AssistantViewChangeCounterTest = 0
+
             # header file, move header to right, source to left
             if file_name.endswith(".h"):
                 source = view.window().find_open_file(file_name.replace('.h', '.cpp'))
@@ -52,3 +64,11 @@ class AssistantListener(sublime_plugin.EventListener):
                     self.layout_panes(self.current, view)
                     view.window().set_view_index(source, 0, 0)
                     view.window().set_view_index(view, 1, view.window().get_view_index(view)[1])
+
+                    #Switches view then switches back so they are both active views
+                    #The global variable is used so it doesn't get into a switching loop
+                    if AssistantViewChangeCounterTest == 0:
+                        AssistantViewChangeCounterTest = 2
+                        view.window().focus_view(source)
+                        view.window().focus_view(view)
+                        AssistantViewChangeCounterTest = 0
