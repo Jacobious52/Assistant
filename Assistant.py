@@ -1,8 +1,9 @@
 '''
 Author:
-Jacob "Speedy" Gonzalez
+Jacob "Speedy" Gonzalez (Thanks sam)
 Contributers:
 Sam Lewis
+Ben Morris
 Jake Lane
 '''
 
@@ -13,14 +14,13 @@ header files will be to the right/bottom
 source files will be to the left/top
 '''
 
-AssistantViewChangeCounterTest = 0
-
 class AssistantListener(sublime_plugin.EventListener):
     '''EventListener class for events'''
 
     def __init__(self):
-        self.layouts = ['2 columns', '2 rows']
-        self.current = '2 columns'
+        self.layouts = ['2 Columns', '2 Rows']
+        self.current = '2 Columns'
+        self.assistant_view_change_counter = 0
         sublime.active_window().show_quick_panel(self.layouts, self.on_done)
 
     def on_done(self, index):
@@ -33,12 +33,10 @@ class AssistantListener(sublime_plugin.EventListener):
         #rows
         elif layout == self.layouts[1]:
             view.window().set_layout({"cols": [0 ,1], "rows": [0, 0.5, 1], "cells": [[0, 0, 1, 1], [0, 1, 1, 2]]})
-            
+
     def on_activated(self, view):
         file_name = view.file_name()
         # custom layout name
-
-        global AssistantViewChangeCounterTest
 
         if file_name != None:
             # source file, move header to right, source to left
@@ -51,11 +49,11 @@ class AssistantListener(sublime_plugin.EventListener):
 
                     #Switches view then switches back so they are both active views
                     #The global variable is used so it doesn't get into a switching loop
-                    if AssistantViewChangeCounterTest == 0:
-                        AssistantViewChangeCounterTest = 1
+                    if self.assistant_view_change_counter == 0:
+                        self.assistant_view_change_counter = 1
                         view.window().focus_view(header)
                         view.window().focus_view(view)
-                        AssistantViewChangeCounterTest = 0
+                        self.assistant_view_change_counter = 0
 
             # header file, move header to right, source to left
             if file_name.endswith(".h"):
@@ -67,8 +65,8 @@ class AssistantListener(sublime_plugin.EventListener):
 
                     #Switches view then switches back so they are both active views
                     #The global variable is used so it doesn't get into a switching loop
-                    if AssistantViewChangeCounterTest == 0:
-                        AssistantViewChangeCounterTest = 2
+                    if self.assistant_view_change_counter == 0:
+                        self.assistant_view_change_counter = 2
                         view.window().focus_view(source)
                         view.window().focus_view(view)
-                        AssistantViewChangeCounterTest = 0
+                        self.assistant_view_change_counter = 0
